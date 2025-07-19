@@ -317,7 +317,7 @@ function checkPassword(e, onYes) {
 		} else {
 			const msgEl = document.getElementById("customConfirmMessage");
 			msgEl.innerHTML += `
-				<p style="color: red; margin: -8px 0 2px 0; font-size: 13px;">Wrong Password</p>
+				<p style="color: red; margin: -5px 0 2px 0; font-size: 12px; font-weight: normal;">Wrong Password</p>
 			`;
 		}
 	});
@@ -359,6 +359,7 @@ function loginPassword() {
 		}
 
 		function onNo() {
+			window.close();
 			cleanUp();
 			updatePasswordButton(true);
 			resolve(false);
