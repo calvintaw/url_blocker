@@ -1,0 +1,213 @@
+// Load settings (using chrome.storage.sync)
+document.addEventListener("DOMContentLoaded", () => {
+	chrome.storage.sync.get(["enabled", "whitelist", "redirectRules"], (data) => {
+		document.getElementById("toggle").checked = data.enabled ?? true;
+
+		updateList(data.whitelist || []);
+		updateRedirectList(data.redirectRules || []);
+	});
+});
+
+document.getElementById("toggle").addEventListener("change", (e) => {
+	chrome.storage.sync.set({ enabled: e.target.checked });
+});
+
+document.getElementById("addDomain").addEventListener("click", () => {
+	const input = document.getElementById("domainInput");
+	const domain = input.value.trim();
+	if (!domain) return;
+
+	chrome.storage.sync.get(["whitelist"], (data) => {
+		const list = data.whitelist || [];
+		if (!list.includes(domain)) {
+			list.push(domain);
+			chrome.storage.sync.set({ whitelist: list }, () => {
+				updateList(list);
+				input.value = "";
+			});
+		}
+	});
+});
+
+function updateList(list) {
+	const el = document.getElementById("whitelist");
+	el.innerHTML = "";
+	list.forEach((domain, i) => {
+		const row = document.createElement("div");
+		row.className = "rule-item";
+		row.innerHTML = `
+         <span>${domain}</span>
+         <button class="remove_btn" data-i="${i}" aria-label="Remove domain">&times;</button>
+      `;
+		el.appendChild(row);
+	});
+
+	// Delete handler
+	el.querySelectorAll(".remove_btn").forEach((btn) => {
+		btn.addEventListener("click", () => {
+			const index = parseInt(btn.getAttribute("data-i"));
+			list.splice(index, 1);
+			chrome.storage.sync.set({ whitelist: list }, () => updateList(list));
+		});
+	});
+}
+
+// Load redirect rules
+chrome.storage.sync.get(["redirectRules"], (data) => {
+	updateRedirectList(data.redirectRules || []);
+});
+
+// Add redirect rule
+document.getElementById("addRedirect").addEventListener("click", () => {
+	const from = document.getElementById("fromDomain").value.trim();
+	const to = document.getElementById("toDomain").value.trim();
+	if (!from || !to) return;
+
+	chrome.storage.sync.get(["redirectRules"], (data) => {
+		const rules = data.redirectRules || [];
+		// Avoid duplicates
+		if (!rules.some((rule) => rule.from === from && rule.to === to)) {
+			rules.push({ from, to, locked: false });
+			chrome.storage.sync.set({ redirectRules: rules }, () => {
+				updateRedirectList(rules);
+				document.getElementById("fromDomain").value = "";
+				document.getElementById("toDomain").value = "";
+			});
+		}
+	});
+});
+
+// Delete rule function (only if not locked)
+function deleteRule(index, rules) {
+	if (rules[index].locked) return; // don't delete locked rules
+	rules.splice(index, 1);
+	chrome.storage.sync.set({ redirectRules: rules }, () => updateRedirectList(rules));
+}
+
+// Toggle lock state for a rule
+function toggleLock(index, rules) {
+	rules[index].locked = !rules[index].locked;
+	chrome.storage.sync.set({ redirectRules: rules }, () => updateRedirectList(rules));
+}
+
+function updateRedirectList(rules) {
+	const el = document.getElementById("redirectList");
+	el.innerHTML = "";
+	rules.forEach((rule, i) => {
+		const isLocked = rule.locked;
+		const lockSvg = isLocked
+			? `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="#e53e3e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>`
+			: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        <line x1="7" y1="16" x2="17" y2="16"></line>
+      </svg>`;
+
+		const row = document.createElement("div");
+		row.className = "rule-item";
+		row.innerHTML = `
+			<span>${rule.from} &rarr; ${rule.to}</span>
+			<button class="remove_btn" data-i="${i}" aria-label="Remove redirect" ${isLocked ? "disabled" : ""} style="opacity:${
+			isLocked ? 0.5 : 1
+		}; cursor:${isLocked ? "not-allowed" : "pointer"}">&times;</button>
+			<button class="lock" data-i="${i}" aria-label="${isLocked ? "Unlock rule" : "Lock rule"}" title="${
+			isLocked ? "Unlock this rule" : "Lock this rule"
+		}">
+				${lockSvg}
+			</button>
+		`;
+		el.appendChild(row);
+	});
+
+	// Delete handler (only for unlocked)
+	el.querySelectorAll(".remove_btn").forEach((btn) => {
+		btn.addEventListener("click", () => {
+			const index = parseInt(btn.getAttribute("data-i"));
+			deleteRule(index, rules);
+		});
+	});
+
+	// Lock/unlock handler
+	el.querySelectorAll(".lock").forEach((btn) => {
+		btn.addEventListener("click", async () => {
+			const index = parseInt(btn.getAttribute("data-i"));
+			if (rules[index].locked) {
+				const rule = rules[index];
+				const htmlMessage = `
+  Are you sure you want to unblock this?<br>
+  <strong>- ${rule.from} &rarr; ${rule.to}</strong>
+`;
+				const confirmed = await showCustomConfirm(htmlMessage);
+
+				if (confirmed) {
+					toggleLock(index, rules);
+				}
+			} else {
+				toggleLock(index, rules);
+			}
+		});
+	});
+}
+
+function showCustomConfirm(message) {
+	return new Promise((resolve) => {
+		const overlay = document.getElementById("customConfirm");
+		const msgEl = document.getElementById("customConfirmMessage");
+		const yesBtn = document.getElementById("confirmYes");
+		const noBtn = document.getElementById("confirmNo");
+
+		msgEl.innerHTML = message; // <-- allow HTML here
+		overlay.style.display = "flex";
+
+		function cleanUp() {
+			overlay.style.display = "none";
+			yesBtn.removeEventListener("click", onYes);
+			noBtn.removeEventListener("click", onNo);
+		}
+
+		function onYes() {
+			cleanUp();
+			resolve(true);
+		}
+
+		function onNo() {
+			cleanUp();
+			resolve(false);
+		}
+
+		yesBtn.addEventListener("click", onYes);
+		noBtn.addEventListener("click", onNo);
+	});
+}
+
+// // Export settings
+// document.getElementById("exportSettings").addEventListener("click", () => {
+// 	chrome.storage.local.get(null, (data) => {
+// 		const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+// 		const url = URL.createObjectURL(blob);
+// 		const a = document.createElement("a");
+// 		a.download = "malicious-url-settings.json";
+// 		a.href = url;
+// 		a.click();
+// 	});
+// });
+
+// // Import settings
+// document.getElementById("importFile").addEventListener("change", (e) => {
+// 	const file = e.target.files[0];
+// 	if (!file) return;
+
+// 	const reader = new FileReader();
+// 	reader.onload = () => {
+// 		try {
+// 			const data = JSON.parse(reader.result);
+// 			chrome.storage.local.set(data, () => location.reload());
+// 		} catch (err) {
+// 			alert("Invalid JSON file.");
+// 		}
+// 	};
+// 	reader.readAsText(file);
+// });

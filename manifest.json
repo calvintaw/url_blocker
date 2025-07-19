@@ -1,0 +1,37 @@
+{
+	"manifest_version": 3,
+	"name": "Smart Malicious URL Detector",
+	"version": "1.0",
+	"description": "A free and minimal alternative to BlockSite. Lets you block unwanted websites and redirect them to any URL you choose.",
+	"permissions": ["storage", "tabs", "scripting", "activeTab"],
+	"action": {
+		"default_popup": "popup.html",
+		"default_icon": {
+			"16": "icons/icon16.png",
+			"48": "icons/icon48.png",
+			"128": "icons/icon128.png"
+		}
+	},
+	"background": {
+		"service_worker": "background.js"
+	},
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["content.js"]
+		}
+	],
+
+	"web_accessible_resources": [
+		{
+			"resources": ["config.js", "warning.html", "styles.css"],
+			"matches": ["<all_urls>"]
+		}
+	],
+	"host_permissions": ["https://safebrowsing.googleapis.com/*"],
+	"icons": {
+		"16": "icons/icon16.png",
+		"48": "icons/icon48.png",
+		"128": "icons/icon128.png"
+	}
+}

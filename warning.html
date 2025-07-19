@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Warning: Unsafe Site</title>
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				font-family: Arial, sans-serif;
+				background: #fff5f5;
+				color: #2e2e2e;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+				padding: 2rem;
+				text-align: center;
+			}
+			.container {
+				max-width: 480px;
+				background: white;
+				border: 1px solid #f5c2c7;
+				border-radius: 12px;
+				box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+				padding: 2rem;
+			}
+			svg {
+				width: 80px;
+				height: 80px;
+				fill: #d32f2f;
+				margin-bottom: 1rem;
+			}
+			h1 {
+				font-size: 1.6rem;
+				color: #d32f2f;
+				margin-bottom: 0.5rem;
+			}
+			p {
+				margin-bottom: 1.5rem;
+				font-size: 1rem;
+				color: #555;
+			}
+			a {
+				display: inline-block;
+				padding: 0.6rem 1.2rem;
+				background: #d32f2f;
+				color: white;
+				border-radius: 8px;
+				text-decoration: none;
+				transition: background 0.2s;
+			}
+			a:hover {
+				background: #b71c1c;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<svg viewBox="0 0 24 24">
+				<path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+			</svg>
+			<h1>Unsafe Website Warning</h1>
+			<p>
+				This website has been flagged as potentially harmful. It's recommended you close this tab and avoid entering
+				personal information.
+			</p>
+			<a href="https://www.google.com">Go to Safety</a>
+		</div>
+	</body>
+</html>

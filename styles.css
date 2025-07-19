@@ -1,0 +1,233 @@
+body {
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	min-width: 320px;
+	padding: 16px;
+	background: #f0f4f8;
+	color: #222;
+	font-size: 16px; /* increased base font size */
+}
+
+h3,
+h4 {
+	margin: 0 0 12px 0;
+	color: #1a202c;
+	font-weight: 700;
+	font-size: 20px; /* slightly bigger headers */
+}
+
+label {
+	display: flex;
+	align-items: center;
+	font-size: 16px; /* bigger for easier reading */
+	margin-bottom: 16px;
+	cursor: pointer;
+	user-select: none;
+}
+
+input[type="checkbox"] {
+	width: 20px; /* slightly bigger */
+	height: 20px;
+	margin-right: 12px;
+	cursor: pointer;
+}
+
+input[type="text"] {
+	width: 100%;
+	padding: 10px 12px; /* more padding for comfort */
+	margin-bottom: 12px;
+	font-size: 16px; /* increased for readability */
+	border: 1.5px solid #cbd5e0;
+	border-radius: 8px;
+	box-sizing: border-box;
+	transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+	outline: none;
+	border-color: #3182ce;
+	box-shadow: 0 0 7px rgba(49, 130, 206, 0.6);
+}
+
+button {
+	width: 100%;
+	padding: 12px 0;
+	background-color: #3182ce;
+	color: #fff;
+	font-size: 16px;
+	font-weight: 700;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color 0.25s ease;
+	user-select: none;
+	margin-bottom: 16px;
+}
+
+button:hover {
+	background-color: #2b6cb0;
+}
+
+.rule-list {
+	font-size: 15px; /* slightly bigger */
+	margin-bottom: 16px;
+	max-height: 180px; /* a bit taller */
+	overflow-y: auto;
+	border: 1.5px solid #cbd5e0;
+	border-radius: 8px;
+	background: #fff;
+	padding: 8px 12px;
+}
+
+.rule-list:empty {
+	display: none;
+}
+
+/* Adjusted .rule-item for smaller height */
+.rule-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 5px 10px;
+	margin: 6px 0;
+	background: #edf2f7;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+	color: #2d3748;
+	font-weight: 600;
+	user-select: text;
+	transition: background-color 0.2s ease;
+}
+
+/* Keep hover background */
+.rule-item:hover {
+	background-color: #e2e8f0;
+}
+
+/* Span with ellipsis for long text */
+.rule-item > span {
+	font-size: 16px;
+}
+
+/* Remove button: vertically centered and aligned */
+.rule-item > button {
+	background-color: #e53e3e;
+	border: none;
+	border-radius: 8px;
+	color: white;
+	width: 30px;
+	height: 30px;
+	margin-bottom: 0 !important;
+	font-size: 25px;
+	cursor: pointer;
+	user-select: none;
+	transition: background-color 0.25s ease;
+	display: flex;
+	align-items: center; /* vertically center content inside button */
+	justify-content: center;
+}
+
+/* Hover and focus states */
+.rule-item > button:hover,
+.rule-item > button:focus {
+	background-color: #9b2c2c;
+	outline: none;
+}
+
+/* Accessible focus style */
+.rule-item > button:focus-visible {
+	outline: 2px solid #3182ce;
+	outline-offset: 2px;
+}
+
+hr {
+	margin: 28px 0;
+	border: none;
+	border-top: 1.5px solid #cbd5e0;
+}
+
+.lock {
+	background: black !important;
+	border: none !important;
+	cursor: pointer !important;
+	padding: 4px !important;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.1s ease;
+}
+.lock:hover {
+	transform: scale(1.1);
+	color: white;
+	background: black !important;
+}
+
+.custom-confirm-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 10000;
+}
+
+.custom-confirm-box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background: white;
+	padding: 20px 30px;
+	border-radius: 10px;
+	max-width: 320px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+	text-align: center;
+	font-family: Arial, sans-serif;
+}
+
+.custom-confirm-box p {
+	text-align: left;
+	margin-bottom: 20px;
+	font-size: 1rem;
+	color: #222;
+	white-space: pre-line;
+}
+
+.custom-confirm-buttons {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.custom-confirm-buttons button {
+	width: 100%;
+	text-align: center;
+	padding: 8px 18px;
+	margin: 4px 8px;
+	border: none;
+	border-radius: 6px;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: background-color 0.25s ease;
+}
+
+#confirmYes {
+	background-color: #e53e3e;
+	color: white;
+}
+
+#confirmYes:hover {
+	background-color: #9b2c2c;
+}
+
+#confirmNo {
+	background-color: #cbd5e0;
+	color: #2d3748;
+}
+
+#confirmNo:hover {
+	background-color: #a0aec0;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Smart Malicious URL Detector</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<h3>Malicious URL Detector</h3>
+
+		<label><input type="checkbox" id="toggle" /> Enable Scanning</label>
+
+		<hr />
+
+		<h4>Whitelist</h4>
+		<input type="text" id="domainInput" placeholder="e.g. example.com" />
+		<button id="addDomain">Add to Whitelist</button>
+		<div id="whitelist" class="rule-list"></div>
+
+		<hr />
+
+		<h4>Redirect Rules</h4>
+		<input type="text" id="fromDomain" placeholder="Block (e.g. gaming.com)" />
+		<input type="text" id="toDomain" placeholder="Redirect to (e.g. khanacademy.org)" />
+		<button id="addRedirect">Add Redirect Rule</button>
+		<div id="redirectList" class="rule-list"></div>
+
+		<div id="customConfirm" class="custom-confirm-overlay" style="display: none">
+			<div class="custom-confirm-box">
+				<p id="customConfirmMessage"></p>
+				<div class="custom-confirm-buttons">
+					<button id="confirmYes">Yes</button>
+					<button id="confirmNo">No</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- <hr /> -->
+
+		<!-- <h4>Backup / Restore</h4>
+		<button id="exportSettings">Export Settings</button>
+		<input type="file" id="importFile" accept=".json" /> -->
+
+		<script src="popup.js"></script>
+	</body>
+</html>
