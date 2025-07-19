@@ -29,7 +29,7 @@ async function checkUrlWithSafeBrowsing(url) {
 
 	const data = await response.json();
 	if (data && data.matches) {
-		console.log("⚠️ Unsafe URL Detected:", url);
+		console.log("Unsafe URL Detected:", url);
 		return true;
 	}
 	return false;

@@ -1,6 +1,23 @@
+html {
+	overflow-y: scroll;
+	scrollbar-gutter: stable;
+}
+
+/* For WebKit browsers */
+body::-webkit-scrollbar {
+	width: 8px; /* thinner scrollbar */
+}
+
+/* Optional scrollbar thumb */
+body::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+}
+
 body {
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 	min-width: 320px;
+	min-height: 528px;
 	padding: 16px;
 	background: #f0f4f8;
 	color: #222;
@@ -69,13 +86,12 @@ button:hover {
 
 .rule-list {
 	font-size: 15px; /* slightly bigger */
-	margin-bottom: 16px;
 	max-height: 180px; /* a bit taller */
 	overflow-y: auto;
 	border: 1.5px solid #cbd5e0;
-	border-radius: 8px;
+	border-radius: 4px;
 	background: #fff;
-	padding: 8px 12px;
+	padding: 8px;
 }
 
 .rule-list:empty {
@@ -109,7 +125,7 @@ button:hover {
 }
 
 /* Remove button: vertically centered and aligned */
-.rule-item > button {
+.rule-item button {
 	background-color: #e53e3e;
 	border: none;
 	border-radius: 8px;
@@ -127,20 +143,20 @@ button:hover {
 }
 
 /* Hover and focus states */
-.rule-item > button:hover,
-.rule-item > button:focus {
+.rule-item button:hover,
+.rule-item button:focus {
 	background-color: #9b2c2c;
 	outline: none;
 }
 
 /* Accessible focus style */
-.rule-item > button:focus-visible {
+.rule-item button:focus-visible {
 	outline: 2px solid #3182ce;
 	outline-offset: 2px;
 }
 
 hr {
-	margin: 28px 0;
+	margin: 15px 0;
 	border: none;
 	border-top: 1.5px solid #cbd5e0;
 }
@@ -230,4 +246,76 @@ hr {
 
 #confirmNo:hover {
 	background-color: #a0aec0;
+}
+
+/* --- Details Container Styling --- */
+details {
+	margin-top: 12px;
+	border: 1.5px solid #cbd5e0;
+	border-radius: 8px;
+	background-color: #f8fafc;
+	padding: 0;
+	overflow: hidden;
+}
+
+/* --- Summary Header Styling --- */
+summary {
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 16px;
+	padding: 10px 14px;
+	background: #e2e8f0;
+	color: #252d3c;
+	border-bottom: 1px solid #cbd5e0;
+	user-select: none;
+	display: flex;
+	align-items: center;
+	transition: background-color 0.2s ease;
+}
+
+summary:hover {
+	background-color: #cbd5e0;
+}
+
+summary::-webkit-details-marker {
+	display: none;
+}
+
+summary::before {
+	content: ">";
+	display: inline-block;
+	margin-right: 8px;
+	transition: transform 0.2s ease;
+	font-size: 18px;
+	color: #4a5568;
+}
+
+details[open] summary::before {
+	transform: rotate(90deg);
+}
+
+/* --- Rule List Inside <details> --- */
+.rule-list {
+	font-size: 15px;
+	background: #fff;
+	padding: 8px 10px;
+	max-height: 200px;
+	overflow-y: auto;
+	color: #2d3748;
+}
+
+.rule-list:empty {
+	display: none;
+}
+
+.rule-item {
+	justify-content: space-between;
+}
+
+.rule-item-btns {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	width: fit-content;
+	gap: 5px;
 }

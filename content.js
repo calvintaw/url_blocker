@@ -7,8 +7,8 @@ function getHostname(url) {
 }
 
 function isDomainMatch(pattern, hostname) {
-   try {
-      // this is chatgpt generated. i didn't bother to check
+	try {
+		// this is chatgpt generated. i didn't bother to write the regex.
 		const escaped = pattern.replace(/[-[.\]/{}()+^$|\\]/g, "\\$&");
 		const regexStr = escaped.replace(/\*/g, ".*").replace(/\?/g, ".");
 		const regex = new RegExp(`^${regexStr}$`, "i");
@@ -37,12 +37,17 @@ chrome.storage.local.get(["enabled", "whitelist", "redirectRules"], (data) => {
 
 	for (const rule of redirectRules) {
 		if (isDomainMatch(rule.from, hostname)) {
+			if (rule.to === "") {
+				window.location.href = "chrome://newtab/";
+				break;
+			}
+
 			const redirectTo = rule.to.startsWith("https") ? rule.to : "https://" + rule.to;
 
 			// Prevent infinite redirect
 			if (getHostname(redirectTo) === hostname) return;
 
-			console.log(`[Redirect] ${hostname} ➜ ${redirectTo}`);
+			console.log(`[Redirect] ${hostname} => ${redirectTo}`);
 			window.location.href = redirectTo;
 			break;
 		}

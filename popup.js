@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		updateList(data.whitelist || []);
 		updateRedirectList(data.redirectRules || []);
+		updateWhitelistVisibility();
+		updateRedirectlistVisibility();
 	});
 });
 
@@ -23,6 +25,7 @@ document.getElementById("addDomain").addEventListener("click", () => {
 			list.push(domain);
 			chrome.storage.sync.set({ whitelist: list }, () => {
 				updateList(list);
+				updateWhitelistVisibility();
 				input.value = "";
 			});
 		}
@@ -47,7 +50,10 @@ function updateList(list) {
 		btn.addEventListener("click", () => {
 			const index = parseInt(btn.getAttribute("data-i"));
 			list.splice(index, 1);
-			chrome.storage.sync.set({ whitelist: list }, () => updateList(list));
+			chrome.storage.sync.set({ whitelist: list }, () => {
+				updateList(list);
+				updateWhitelistVisibility();
+			});
 		});
 	});
 }
@@ -60,8 +66,8 @@ chrome.storage.sync.get(["redirectRules"], (data) => {
 // Add redirect rule
 document.getElementById("addRedirect").addEventListener("click", () => {
 	const from = document.getElementById("fromDomain").value.trim();
-	const to = document.getElementById("toDomain").value.trim();
-	if (!from || !to) return;
+	const to = document.getElementById("toDomain").value.trim() ?? "";
+	if (!from) return;
 
 	chrome.storage.sync.get(["redirectRules"], (data) => {
 		const rules = data.redirectRules || [];
@@ -70,6 +76,7 @@ document.getElementById("addRedirect").addEventListener("click", () => {
 			rules.push({ from, to, locked: false });
 			chrome.storage.sync.set({ redirectRules: rules }, () => {
 				updateRedirectList(rules);
+				updateRedirectlistVisibility();
 				document.getElementById("fromDomain").value = "";
 				document.getElementById("toDomain").value = "";
 			});
@@ -79,15 +86,32 @@ document.getElementById("addRedirect").addEventListener("click", () => {
 
 // Delete rule function (only if not locked)
 function deleteRule(index, rules) {
-	if (rules[index].locked) return; // don't delete locked rules
+	if (rules[index].locked) return;
 	rules.splice(index, 1);
-	chrome.storage.sync.set({ redirectRules: rules }, () => updateRedirectList(rules));
+	chrome.storage.sync.set({ redirectRules: rules }, () => {
+		updateRedirectList(rules);
+		updateRedirectlistVisibility();
+	});
 }
 
 // Toggle lock state for a rule
 function toggleLock(index, rules) {
 	rules[index].locked = !rules[index].locked;
 	chrome.storage.sync.set({ redirectRules: rules }, () => updateRedirectList(rules));
+}
+
+function updateWhitelistVisibility() {
+	const container = document.getElementById("whitelist");
+	const section = container.closest("details");
+
+	section.style.display = container.children.length === 0 ? "none" : "block";
+}
+
+function updateRedirectlistVisibility() {
+	const container = document.getElementById("redirectList");
+	const section = container.closest("details");
+
+	section.style.display = container.children.length === 0 ? "none" : "block";
 }
 
 function updateRedirectList(rules) {
@@ -109,8 +133,9 @@ function updateRedirectList(rules) {
 		const row = document.createElement("div");
 		row.className = "rule-item";
 		row.innerHTML = `
-			<span>${rule.from} &rarr; ${rule.to}</span>
-			<button class="remove_btn" data-i="${i}" aria-label="Remove redirect" ${isLocked ? "disabled" : ""} style="opacity:${
+			<span>${rule.from} &rarr; ${rule.to === "" ? "[blocked]" : rule.to}</span>
+			<div class="rule-item-btns">
+				<button class="remove_btn" data-i="${i}" aria-label="Remove redirect" ${isLocked ? "disabled" : ""} style="opacity:${
 			isLocked ? 0.5 : 1
 		}; cursor:${isLocked ? "not-allowed" : "pointer"}">&times;</button>
 			<button class="lock" data-i="${i}" aria-label="${isLocked ? "Unlock rule" : "Lock rule"}" title="${
@@ -118,6 +143,7 @@ function updateRedirectList(rules) {
 		}">
 				${lockSvg}
 			</button>
+			</div>
 		`;
 		el.appendChild(row);
 	});
@@ -138,7 +164,7 @@ function updateRedirectList(rules) {
 				const rule = rules[index];
 				const htmlMessage = `
   Are you sure you want to unblock this?<br>
-  <strong>- ${rule.from} &rarr; ${rule.to}</strong>
+  <strong>- ${rule.from} &rarr; ${rule.to === "" ? "[blocked]" : rule.to}</strong>
 `;
 				const confirmed = await showCustomConfirm(htmlMessage);
 
