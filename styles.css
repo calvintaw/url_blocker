@@ -483,7 +483,6 @@ form#passwordForm button:hover {
 .autocomplete-suggestions li {
 	padding: 10px 16px;
 	cursor: pointer;
-	transition: background 0.2s ease;
 }
 
 .autocomplete-suggestions li:hover {

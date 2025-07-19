@@ -617,6 +617,229 @@ const sites = [
 	"gsmarena.com", // Phone specs and reviews
 	"anandtech.com", // Hardware reviews
 	"tomshardware.com", // PC hardware news
+	"aol.com",
+	"ask.com",
+	"gab.com",
+	"gettr.com",
+	"truthsocial.com",
+	"parler.com",
+	"rumble.com",
+	"odysee.com",
+	"bitchute.com",
+	"vimeo.com",
+	"dailymotion.com", // Re-adding for breadth, check carefully for exact duplicates if combining.
+	"crunchyroll.com",
+	"hulu.com",
+	"peacocktv.com",
+	"paramountplus.com",
+	"discoveryplus.com",
+	"shutterfly.com",
+	"flickr.com",
+	"imgur.com",
+	"giphy.com",
+	"deviantart.com",
+	"artstation.com",
+	"behance.net",
+	"unsplash.com",
+	"pexels.com",
+	"pixabay.com",
+	"freeimages.com",
+	"dreamstime.com",
+	"gettyimages.com",
+	"shutterstock.com",
+	"istockphoto.com",
+	"alamy.com",
+	"flickr.com", // Duplicate, careful if combining
+	"soundcloud.com",
+	"bandcamp.com",
+	"last.fm",
+	"allmusic.com",
+	"genius.com",
+	"billboard.com",
+	"rollingstone.com",
+	"pitchfork.com",
+	"rottentomatoes.com", // Duplicate, careful if combining
+	"metacritic.com", // Duplicate, careful if combining
+	"ign.com", // Duplicate, careful if combining
+	"gamespot.com", // Duplicate, careful if combining
+	"pcgamer.com",
+	"polygon.com",
+	"rockpapershotgun.com",
+	"eurogamer.net",
+	"kotaku.com",
+	"destructoid.com",
+	"nintendo.com",
+	"playstation.com",
+	"xbox.com",
+	"epicgames.com", // Duplicate, careful if combining
+	"gog.com",
+	"itch.io",
+	"humblebundle.com",
+	"discordapp.com", // Old domain, but might still be accessed
+	"teamspeak.com",
+	"skype.com",
+	"slack.com",
+	"webex.com",
+	"gotomeeting.com",
+	"monday.com",
+	"wix.com",
+	"squarespace.com",
+	"weebly.com",
+	"jimdo.com",
+	"godaddy.com",
+	"namecheap.com",
+	"hover.com",
+	"bluehost.com",
+	"hostgator.com",
+	"siteground.com",
+	"dreamhost.com",
+	"digitalocean.com",
+	"linode.com",
+	"vultr.com",
+	"aws.amazon.com",
+	"azure.microsoft.com",
+	"cloud.google.com",
+	"heroku.com",
+	"netlify.com",
+	"vercel.com",
+	"cloudflare.com",
+	"mozilla.org",
+	"brave.com", // Duplicate, careful if combining
+	"opera.com",
+	"vivaldi.com",
+	"duckduckgo.com", // Duplicate, careful if combining
+	"ecosia.org", // Duplicate, careful if combining
+	"startpage.com",
+	"swisscows.com",
+	"protonmail.com",
+	"tutanota.com",
+	"gmx.com",
+	"zoho.com",
+	"fastmail.com",
+	"hey.com",
+	"stackblitz.com",
+	"codesandbox.io",
+	"glitch.com",
+	"codewars.com",
+	"hackerrank.com",
+	"leetcode.com",
+	"topcoder.com",
+	"codechef.com",
+	"atcoder.jp",
+	"spoj.com",
+	"projecteuler.net",
+	"kaggle.com", // Duplicate, careful if combining
+	"towardsdatascience.com",
+	"medium.com", // Duplicate, careful if combining
+	"dev.to",
+	"hashnode.dev",
+	"freecodecamp.org", // Duplicate, careful if combining
+	"theodinproject.com",
+	"eloquentjavascript.net",
+	"javascript.info",
+	"react.dev",
+	"vuejs.org",
+	"angular.io",
+	"nodejs.org",
+	"python.org",
+	"php.net",
+	"ruby-lang.org",
+	"go.dev",
+	"rust-lang.org",
+	"kotlinlang.org",
+	"swift.org",
+	"java.com",
+	"spring.io",
+	"djangoproject.com",
+	"rubyonrails.org",
+	"laravel.com",
+	"symfony.com",
+	"dotnet.microsoft.com",
+	"docker.com",
+	"kubernetes.io",
+	"ansible.com",
+	"terraform.io",
+	"jenkins.io",
+	"gitlab.com",
+	"bitbucket.org",
+	"confluence.atlassian.com",
+	"jira.atlassian.com",
+	"stackoverflow.blog",
+	"superuser.com",
+	"askubuntu.com",
+	"serverfault.com",
+	"stackexchange.com",
+	"quora.com", // Duplicate, careful if combining
+	"answers.microsoft.com",
+	"support.apple.com",
+	"support.google.com",
+	"support.microsoft.com",
+	"support.mozilla.org",
+	"support.discord.com",
+	"support.spotify.com",
+	"help.netflix.com",
+	"help.instagram.com",
+	"help.twitter.com",
+	"help.facebook.com",
+	"help.linkedin.com",
+	"help.pinterest.com",
+	"help.twitch.tv",
+	"help.reddit.com",
+	"help.amazon.com",
+	"help.ebay.com",
+	"help.paypal.com",
+	"help.shopify.com",
+	"help.etsy.com",
+	"help.walmart.com",
+	"help.target.com",
+	"help.bestbuy.com",
+	"help.homedepot.com",
+	"help.lowes.com",
+	"help.bankofamerica.com",
+	"help.chase.com",
+	"help.wellsfargo.com",
+	"investopedia.com",
+	"fool.com",
+	"marketwatch.com",
+	"investing.com",
+	"seekingalpha.com",
+	"finviz.com",
+	"tradingview.com",
+	"cryptocurrencyjobs.co",
+	"coindesk.com",
+	"cointelegraph.com",
+	"bitcoin.org",
+	"ethereum.org",
+	"binance.com",
+	"coinbase.com",
+	"kraken.com",
+	"gemini.com",
+	"bybit.com",
+	"okx.com",
+	"crypto.com",
+	"pancakeswap.finance",
+	"uniswap.org",
+	"sushiswap.com",
+	"aave.com",
+	"compound.finance",
+	"makerdao.com",
+	"curve.fi",
+	"solana.com",
+	"cardano.org",
+	"polkadot.network",
+	"avalanche.network",
+	"chainlink.io",
+	"filecoin.io",
+	"tezos.com",
+	"algorand.com",
+	"cosmos.network",
+	"near.org",
+	"hedera.com",
+	"vechain.org",
+	"iota.org",
+	"monero.org",
+	"zcashcommunity.com",
+	"dash.org",
 ];
 
 function enableAutocomplete(inputId, type) {
@@ -666,11 +889,11 @@ function enableAutocomplete(inputId, type) {
 			e.preventDefault();
 
 			if (selectedIndex < items.length - 1) selectedIndex++;
-			updateHighlight(items);
+			updateHighlight(items, 1);
 		} else if (e.key === "ArrowUp") {
 			e.preventDefault();
 			if (selectedIndex > 0) selectedIndex--;
-			updateHighlight(items);
+			updateHighlight(items, -1);
 		} else if (e.key === "Tab" && selectedIndex >= 0) {
 			e.preventDefault();
 			input.value = suggestions[selectedIndex];
@@ -679,15 +902,22 @@ function enableAutocomplete(inputId, type) {
 			if (type === "redirect" && inputId === "fromDomain") {
 				document.getElementById("toDomain").focus();
 			}
+			e.target.value = suggestions[selectedIndex];
 			suggestionBox.innerHTML = "";
 		}
 	});
 
-	function updateHighlight(items) {
+	function updateHighlight(items, direction) {
 		items.forEach((el, i) => {
-			el.classList.toggle("selected", i === selectedIndex);
-			if (i === selectedIndex) input.value = suggestions[i];
+			el.classList.toggle("selected", i == selectedIndex);
+			// if (i === selectedIndex) input.value = suggestions[i];
 		});
+		const selectedEl = items[selectedIndex];
+		if (selectedEl) {
+			selectedEl.scrollIntoView({
+				block: "nearest",
+			});
+		}
 	}
 
 	document.addEventListener("click", (e) => {
@@ -759,19 +989,19 @@ document.getElementById("exportSettings").addEventListener("click", () => {
 	});
 });
 
-// Import settings
-document.getElementById("importFile").addEventListener("change", (e) => {
-	const file = e.target.files[0];
-	if (!file) return;
+// // Import settings
+// document.getElementById("importFile").addEventListener("change", (e) => {
+// 	const file = e.target.files[0];
+// 	if (!file) return;
 
-	const reader = new FileReader();
-	reader.onload = () => {
-		try {
-			const data = JSON.parse(reader.result);
-			chrome.storage.sync.set(data, () => location.reload());
-		} catch (err) {
-			alert("Invalid JSON file.");
-		}
-	};
-	reader.readAsText(file);
-});
+// 	const reader = new FileReader();
+// 	reader.onload = () => {
+// 		try {
+// 			const data = JSON.parse(reader.result);
+// 			chrome.storage.sync.set(data, () => location.reload());
+// 		} catch (err) {
+// 			alert("Invalid JSON file.");
+// 		}
+// 	};
+// 	reader.readAsText(file);
+// });
