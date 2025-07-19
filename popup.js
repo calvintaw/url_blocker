@@ -209,6 +209,22 @@ function showCustomConfirm(message) {
 	});
 }
 
+document.querySelectorAll("details").forEach((detailsEl) => {
+	detailsEl.addEventListener("toggle", (e) => {
+		if (detailsEl.open) {
+			window.scrollTo({
+				top: document.body.scrollHeight,
+				behavior: "smooth",
+			});
+		} else {
+			window.scrollTo({
+				top: 0,
+				behavior: "smooth",
+			});
+		}
+	});
+});
+
 // // Export settings
 // document.getElementById("exportSettings").addEventListener("click", () => {
 // 	chrome.storage.local.get(null, (data) => {
