@@ -35,10 +35,10 @@ const addList = () => {
 			chrome.storage.sync.set({ whitelist: list }, () => {
 				updateList(list);
 				updateWhitelistVisibility();
-				input.value = "";
 			});
 		}
 	});
+	input.value = "";
 };
 
 document.getElementById("addDomain").addEventListener("click", addList);
@@ -88,11 +88,11 @@ const addRedirectRule = () => {
 			chrome.storage.sync.set({ redirectRules: rules }, () => {
 				updateRedirectList(rules);
 				updateRedirectlistVisibility();
-				document.getElementById("fromDomain").value = "";
-				document.getElementById("toDomain").value = "";
 			});
 		}
 	});
+	document.getElementById("fromDomain").value = "";
+	document.getElementById("toDomain").value = "";
 };
 
 document.getElementById("addRedirect").addEventListener("click", addRedirectRule);
@@ -676,14 +676,9 @@ function enableAutocomplete(inputId, type) {
 			input.value = suggestions[selectedIndex];
 			suggestionBox.innerHTML = "";
 		} else if (e.key === "Enter") {
-			if (type === "whitelist" && e.target.value.trim()) {
-				addList();
-				input.value = "";
-			}
 			if (type === "redirect" && inputId === "fromDomain") {
 				document.getElementById("toDomain").focus();
 			}
-
 			suggestionBox.innerHTML = "";
 		}
 	});
@@ -752,31 +747,31 @@ enableAutocomplete("domainInput", "whitelist");
 enableAutocomplete("fromDomain", "redirect");
 enableAutocomplete("toDomain", "redirect");
 
-// // Export settings
-// document.getElementById("exportSettings").addEventListener("click", () => {
-// 	chrome.storage.sync.get(null, (data) => {
-// 		const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-// 		const url = URL.createObjectURL(blob);
-// 		const a = document.createElement("a");
-// 		a.download = "malicious-url-settings.json";
-// 		a.href = url;
-// 		a.click();
-// 	});
-// });
+// Export settings
+document.getElementById("exportSettings").addEventListener("click", () => {
+	chrome.storage.sync.get(null, (data) => {
+		const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement("a");
+		a.download = "malicious-url-settings.json";
+		a.href = url;
+		a.click();
+	});
+});
 
-// // Import settings
-// document.getElementById("importFile").addEventListener("change", (e) => {
-// 	const file = e.target.files[0];
-// 	if (!file) return;
+// Import settings
+document.getElementById("importFile").addEventListener("change", (e) => {
+	const file = e.target.files[0];
+	if (!file) return;
 
-// 	const reader = new FileReader();
-// 	reader.onload = () => {
-// 		try {
-// 			const data = JSON.parse(reader.result);
-// 			chrome.storage.sync.set(data, () => location.reload());
-// 		} catch (err) {
-// 			alert("Invalid JSON file.");
-// 		}
-// 	};
-// 	reader.readAsText(file);
-// });
+	const reader = new FileReader();
+	reader.onload = () => {
+		try {
+			const data = JSON.parse(reader.result);
+			chrome.storage.sync.set(data, () => location.reload());
+		} catch (err) {
+			alert("Invalid JSON file.");
+		}
+	};
+	reader.readAsText(file);
+});
