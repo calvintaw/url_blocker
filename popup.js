@@ -23,7 +23,7 @@ document.getElementById("toggle").addEventListener("change", (e) => {
 	chrome.storage.sync.set({ enabled: e.target.checked });
 });
 
-document.getElementById("addDomain").addEventListener("click", () => {
+const addList = () => {
 	const input = document.getElementById("domainInput");
 	const domain = input.value.trim();
 	if (!domain) return;
@@ -39,7 +39,9 @@ document.getElementById("addDomain").addEventListener("click", () => {
 			});
 		}
 	});
-});
+};
+
+document.getElementById("addDomain").addEventListener("click", addList);
 
 function updateList(list) {
 	const el = document.getElementById("whitelist");
@@ -73,7 +75,7 @@ chrome.storage.sync.get(["redirectRules"], (data) => {
 });
 
 // Add redirect rule
-document.getElementById("addRedirect").addEventListener("click", () => {
+const addRedirectRule = () => {
 	const from = document.getElementById("fromDomain").value.trim();
 	const to = document.getElementById("toDomain").value.trim() ?? "";
 	if (!from) return;
@@ -91,7 +93,9 @@ document.getElementById("addRedirect").addEventListener("click", () => {
 			});
 		}
 	});
-});
+};
+
+document.getElementById("addRedirect").addEventListener("click", addRedirectRule);
 
 // Delete rule function (only if not locked)
 function deleteRule(index, rules) {
@@ -368,6 +372,385 @@ function loginPassword() {
 		form.addEventListener("submit", handleSubmit);
 	});
 }
+
+const sites = [
+	"google.com",
+	"youtube.com",
+	"facebook.com",
+	"instagram.com",
+	"chatgpt.com",
+	"wikipedia.org",
+	"reddit.com",
+	"x.com", // Formerly Twitter
+	"whatsapp.com",
+	"bing.com",
+	"amazon.com",
+	"yahoo.com",
+	"temu.com",
+	"duckduckgo.com",
+	"yahoo.co.jp",
+	"tiktok.com",
+	"yandex.ru",
+	"weather.com",
+	"microsoftonline.com",
+	"msn.com",
+	"microsoft.com",
+	"live.com",
+	"fandom.com",
+	"linkedin.com",
+	"netflix.com",
+	"pinterest.com",
+	"twitch.tv",
+	"openai.com",
+	"naver.com",
+	"office.com",
+	"canva.com",
+	"vk.com",
+	"paypal.com",
+	"aliexpress.com",
+	"discord.com",
+	"github.com",
+	"spotify.com",
+	"apple.com",
+	"imdb.com",
+	"bilibili.com",
+	"roblox.com",
+	"globo.com",
+	"amazon.co.jp",
+	"nytimes.com",
+	"samsung.com",
+	"mail.ru",
+	"ebay.com",
+	"quora.com",
+	"walmart.com",
+	"bbc.co.uk",
+	"amazon.de",
+	"telegram.org",
+	"dailymotion.com",
+	"coupang.com",
+	"bbc.com",
+	"booking.com",
+	"espn.com",
+	"brave.com",
+	"cnn.com",
+	"indeed.com",
+	"rakuten.co.jp",
+	"google.com.br",
+	"google.co.uk",
+	"zoom.us",
+	"adobe.com",
+	"usps.com",
+	"amazon.co.uk",
+	"ozon.ru",
+	"cricbuzz.com",
+	"accuweather.com",
+	"etsy.com",
+	"uol.com.br",
+	"dzen.ru",
+	"steampowered.com",
+	"shop.app",
+	"marca.com",
+	"rutube.ru",
+	"shopify.com",
+	"steamcommunity.com",
+	"ecosia.org",
+	"infobae.com",
+	"google.de",
+	"disneyplus.com",
+	"theguardian.com",
+	"primevideo.com",
+	"gmail.com",
+	"zillow.com",
+	"dailymail.co.uk",
+	"amazon.in",
+	"linktree.ee",
+	"people.com",
+	"google.it",
+	"instructure.com",
+	"google.es",
+	"shein.com",
+	"messenger.com",
+	"max.com",
+	"wildberries.ru",
+	"avito.ru",
+	"foxnews.com",
+	"outlook.com",
+	"indeed.co.in",
+	"wayfair.com",
+	"bestbuy.com",
+	"target.com",
+	"homedepot.com",
+	"lowes.com",
+	"bankofamerica.com",
+	"chase.com",
+	"wellsfargo.com",
+	"craigslist.org",
+	"webmd.com",
+	"mayoclinic.org",
+	"healthline.com",
+	"forbes.com",
+	"bloomberg.com",
+	"wsj.com",
+	"cnbc.com",
+	"reuters.com",
+	"techcrunch.com",
+	"theverge.com",
+	"wired.com",
+	"ign.com",
+	"gamespot.com",
+	"rottentomatoes.com",
+	"metacritic.com",
+	"goodreads.com",
+	"epicgames.com",
+	"chess.com",
+	"geeksforgeeks.org",
+	"stackoverflow.com",
+	"w3schools.com",
+	"mdn.mozilla.net",
+	"freecodecamp.org",
+	"codecademy.com",
+	"udemy.com",
+	"coursera.org",
+	"edx.org",
+	"khanacademy.org",
+	"nationalgeographic.com",
+	"nasa.gov",
+	"whitehouse.gov",
+	"gov.uk",
+	"canada.ca",
+	"aus.gov.au",
+	"un.org",
+	"who.int",
+	"cdc.gov",
+	"nih.gov",
+	"zara.com",
+	"hm.com",
+	"nike.com",
+	"adidas.com",
+	"sephora.com",
+	"ulta.com",
+	"kohls.com",
+	"macys.com",
+	"nordstrom.com",
+	"gap.com",
+	"oldnavy.com",
+	"walmart.ca",
+	"walmart.mx",
+	"carrefour.fr",
+	"tesco.com",
+	"sainsburys.co.uk",
+	"lidl.de",
+	"aldi.de",
+	"alibaba.com",
+	"target.ca",
+	"costco.com",
+	"kroger.com",
+	"cvs.com",
+	"walgreens.com",
+	"docomo.ne.jp", // Mobile carrier Japan
+	"livedoor.jp", // Japanese news/blog
+	"nikkei.com", // Japanese business news
+	"glo.bo", // Short URL for Globo
+	"olx.com", // Classifieds
+	"gumtree.com", // Classifieds UK
+	"leboncoin.fr", // Classifieds France
+	"autoscout24.de", // Car marketplace Germany
+	"mobile.de", // Car marketplace Germany
+	"rightmove.co.uk", // Real estate UK
+	"zoopla.co.uk", // Real estate UK
+	"realtor.com", // Real estate US
+	"zumper.com", // Rental US
+	"redfin.com", // Real estate US
+	"glassdoor.com", // Jobs & company reviews
+	"npr.org", // US public radio news
+	"pbs.org", // US public broadcasting
+	"usatoday.com", // US newspaper
+	"latimes.com", // Los Angeles Times
+	"chicagotribune.com", // Chicago Tribune
+	"washingtonpost.com", // Washington Post
+	"economist.com", // The Economist
+	"time.com", // Time magazine
+	"nationalgeographic.org", // National Geographic (non-profit arm)
+	"smithsonianmag.com", // Smithsonian Magazine
+	"history.com", // History Channel
+	"britannica.com", // Encyclopaedia Britannica
+	"dictionary.com", // Dictionary and Thesaurus
+	"thesaurus.com", // Thesaurus
+	"wordreference.com", // Online dictionaries
+	"duolingo.com", // Language learning
+	"grammarly.com", // Writing assistant
+	"scribd.com", // Digital library
+	"issuu.com", // Digital publishing platform
+	"stackoverflow.co", // Developer Q&A (aliased for stackoverflow.com)
+	"jsfiddle.net", // Online code editor
+	"codepen.io", // Online code editor
+	"repl.it", // Online IDE
+	"kaggle.com", // Data science community
+	"medium.com", // Blogging platform
+	"wordpress.com", // Website builder/blogging
+	"blogger.com", // Blog publishing
+	"trello.com", // Project management
+	"asana.com", // Project management
+	"notion.so", // Workspace
+	"evernote.com", // Note-taking
+	"dropbox.com", // Cloud storage
+	"drive.google.com", // Google Drive
+	"onedrive.live.com", // Microsoft OneDrive
+	"icloud.com", // Apple iCloud
+	"wetransfer.com", // File transfer
+	"sendgrid.com", // Email delivery
+	"mailchimp.com", // Email marketing
+	"hubspot.com", // CRM & marketing
+	"salesforce.com", // CRM
+	"oracle.com", // Software & cloud
+	"sap.com", // Enterprise software
+	"ibm.com", // Technology and consulting
+	"dell.com", // Computers
+	"hp.com", // Computers
+	"cnet.com", // Tech news & reviews
+	"zdnet.com", // Tech news
+	"howtogeek.com", // Tech tutorials
+	"lifewire.com", // Tech tips
+	"digitaltrends.com", // Tech news
+	"macrumors.com", // Apple news
+	"androidcentral.com", // Android news
+	"gsmarena.com", // Phone specs and reviews
+	"anandtech.com", // Hardware reviews
+	"tomshardware.com", // PC hardware news
+];
+
+function enableAutocomplete(inputId, type) {
+	const input = document.getElementById(inputId);
+	const suggestionBox = document.createElement("ul");
+	suggestionBox.className = "autocomplete-suggestions";
+	document.body.appendChild(suggestionBox);
+	const dataList = sites;
+
+	let suggestions = [];
+	let selectedIndex = -1;
+
+	function updatePosition() {
+		const rect = input.getBoundingClientRect();
+		suggestionBox.style.top = `${rect.bottom + window.scrollY}px`;
+		suggestionBox.style.left = `${rect.left + window.scrollX}px`;
+		suggestionBox.style.width = `${rect.width}px`;
+	}
+
+	input.addEventListener("input", () => {
+		const value = input.value.toLowerCase();
+		suggestionBox.innerHTML = "";
+		suggestions = [];
+		selectedIndex = -1;
+
+		if (!value) return;
+
+		updatePosition();
+		suggestions = dataList.filter((item) => item.toLowerCase().includes(value));
+
+		suggestions.forEach((item, index) => {
+			const li = document.createElement("li");
+			li.textContent = item;
+			li.dataset.index = index;
+			li.addEventListener("click", () => {
+				input.value = item;
+				suggestionBox.innerHTML = "";
+			});
+			suggestionBox.appendChild(li);
+		});
+	});
+
+	input.addEventListener("keydown", (e) => {
+		const items = suggestionBox.querySelectorAll("li");
+
+		if (e.key === "ArrowDown") {
+			e.preventDefault();
+
+			if (selectedIndex < items.length - 1) selectedIndex++;
+			updateHighlight(items);
+		} else if (e.key === "ArrowUp") {
+			e.preventDefault();
+			if (selectedIndex > 0) selectedIndex--;
+			updateHighlight(items);
+		} else if (e.key === "Tab" && selectedIndex >= 0) {
+			e.preventDefault();
+			input.value = suggestions[selectedIndex];
+			suggestionBox.innerHTML = "";
+		} else if (e.key === "Enter") {
+			if (type === "whitelist" && e.target.value.trim()) {
+				addList();
+				input.value = "";
+			}
+			if (type === "redirect" && inputId === "fromDomain") {
+				document.getElementById("toDomain").focus();
+			}
+
+			suggestionBox.innerHTML = "";
+		}
+	});
+
+	function updateHighlight(items) {
+		items.forEach((el, i) => {
+			el.classList.toggle("selected", i === selectedIndex);
+			if (i === selectedIndex) input.value = suggestions[i];
+		});
+	}
+
+	document.addEventListener("click", (e) => {
+		if (!suggestionBox.contains(e.target) && e.target !== input) {
+			suggestionBox.innerHTML = "";
+		}
+	});
+
+	window.addEventListener("resize", updatePosition);
+	input.addEventListener("focus", updatePosition);
+}
+
+// function enableAutocomplete(inputId) {
+// 	const input = document.getElementById(inputId);
+// 	const suggestionBox = document.createElement("ul");
+// 	suggestionBox.className = "autocomplete-suggestions";
+// 	document.body.appendChild(suggestionBox);
+// 	const dataList = sites;
+
+// 	function updatePosition() {
+// 		const rect = input.getBoundingClientRect();
+// 		suggestionBox.style.top = `${rect.bottom + window.scrollY}px`;
+// 		suggestionBox.style.left = `${rect.left + window.scrollX}px`;
+// 		suggestionBox.style.width = `${rect.width}px`;
+// 	}
+
+// 	input.addEventListener("input", () => {
+// 		const value = input.value.toLowerCase();
+// 		suggestionBox.innerHTML = "";
+
+// 		if (!value) return;
+
+// 		updatePosition();
+// 		const filtered = dataList.filter((item) => item.toLowerCase().includes(value));
+// 		filtered.forEach((item) => {
+// 			const li = document.createElement("li");
+// 			li.textContent = item;
+// 			li.addEventListener("click", () => {
+// 				input.value = item;
+// 				suggestionBox.innerHTML = "";
+// 			});
+// 			suggestionBox.appendChild(li);
+// 		});
+// 	});
+
+// 	document.addEventListener("click", (e) => {
+// 		if (!suggestionBox.contains(e.target) && e.target !== input) {
+// 			suggestionBox.innerHTML = "";
+// 		}
+// 	});
+
+// 	window.addEventListener("resize", updatePosition);
+// 	input.addEventListener("focus", updatePosition);
+// }
+
+enableAutocomplete("domainInput", "whitelist");
+enableAutocomplete("fromDomain", "redirect");
+enableAutocomplete("toDomain", "redirect");
 
 // // Export settings
 // document.getElementById("exportSettings").addEventListener("click", () => {

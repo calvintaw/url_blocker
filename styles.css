@@ -461,3 +461,35 @@ form#passwordForm button:hover {
 	box-shadow: 0 3px 8px rgba(207, 207, 207, 0.8);
 	outline: none;
 }
+
+.autocomplete-suggestions:empty {
+	display: none;
+}
+
+.autocomplete-suggestions {
+	position: absolute;
+	background: white;
+	border: 1px solid #ccc;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	padding: 4px 0;
+	margin-top: 4px;
+	max-height: 180px;
+	overflow-y: auto;
+	z-index: 9999;
+	font-family: system-ui, sans-serif;
+}
+
+.autocomplete-suggestions li {
+	padding: 10px 16px;
+	cursor: pointer;
+	transition: background 0.2s ease;
+}
+
+.autocomplete-suggestions li:hover {
+	background-color: #f2f2f2;
+}
+
+.autocomplete-suggestions li.selected {
+	background-color: #dce9ff;
+}
