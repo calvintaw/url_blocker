@@ -7,7 +7,10 @@
 	<body>
 		<h3>Malicious URL Detector</h3>
 
-		<label><input type="checkbox" id="toggle" /> Enable Scanning</label>
+		<div style="display: flex; gap: 5px; align-items: center; justify-content: space-between">
+			<label><input type="checkbox" id="toggle" /> Enable Scanning</label>
+			<button class="set-pwd_btn" id="set_pwd_btn">Set password</button>
+		</div>
 
 		<hr />
 
@@ -30,13 +33,13 @@
 		</details>
 
 		<div id="customConfirm" class="custom-confirm-overlay" style="display: none">
-			<div class="custom-confirm-box">
-				<p id="customConfirmMessage"></p>
+			<form id="custom-confirm-form" class="custom-confirm-box">
+				<div id="customConfirmMessage"></div>
 				<div class="custom-confirm-buttons">
 					<button id="confirmYes">Yes</button>
 					<button id="confirmNo">No</button>
 				</div>
-			</div>
+			</form>
 		</div>
 
 		<!-- <hr /> -->

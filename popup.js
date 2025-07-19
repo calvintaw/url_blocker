@@ -1,14 +1,23 @@
 // Load settings (using chrome.storage.sync)
 document.addEventListener("DOMContentLoaded", () => {
-	chrome.storage.sync.get(["enabled", "whitelist", "redirectRules"], (data) => {
+	chrome.storage.sync.get(["enabled", "whitelist", "redirectRules", "password"], (data) => {
 		document.getElementById("toggle").checked = data.enabled ?? true;
 
 		updateList(data.whitelist || []);
 		updateRedirectList(data.redirectRules || []);
 		updateWhitelistVisibility();
 		updateRedirectlistVisibility();
+		checkLoginInStatus(data.password);
+		updatePasswordButton(data.password);
 	});
 });
+
+async function checkLoginInStatus(password) {
+	if (password) {
+		const logged = await loginPassword();
+		if (logged) updatePasswordButton(true);
+	}
+}
 
 document.getElementById("toggle").addEventListener("change", (e) => {
 	chrome.storage.sync.set({ enabled: e.target.checked });
@@ -225,9 +234,143 @@ document.querySelectorAll("details").forEach((detailsEl) => {
 	});
 });
 
+function submitPassword(e, onYes) {
+	e.preventDefault();
+	const password = e.target.elements["password"].value;
+	chrome.storage.sync.set({ password: password });
+	onYes();
+}
+
+function updatePasswordButton(password) {
+	const btn = document.getElementById("set_pwd_btn");
+	btn.textContent = password ? "Remove Password" : "Set Password";
+
+	// Remove all previous listeners
+	const newBtn = btn.cloneNode(true);
+	btn.parentNode.replaceChild(newBtn, btn);
+
+	newBtn.addEventListener("click", () => {
+		if (password) {
+			chrome.storage.sync.set({ password: null }, () => {
+				updatePasswordButton(false);
+			});
+		} else {
+			setPassword();
+		}
+	});
+}
+
+function setPassword() {
+	return new Promise((resolve) => {
+		const overlay = document.getElementById("customConfirm");
+		const form = document.getElementById("custom-confirm-form");
+		const msgEl = document.getElementById("customConfirmMessage");
+		const yesBtn = document.getElementById("confirmYes");
+		const noBtn = document.getElementById("confirmNo");
+		yesBtn.textContent = "Confirm";
+		yesBtn.setAttribute("type", "submit");
+		noBtn.textContent = "Cancel";
+		noBtn.setAttribute("type", "reset");
+
+		msgEl.innerHTML = `
+		<label for="password">Set Password</label>
+		<input type="password" id="password" name="password" placeholder="Enter password" />
+	`;
+		overlay.style.display = "flex";
+
+		function handleSubmit(e) {
+			submitPassword(e, onYes);
+		}
+
+		function cleanUp() {
+			overlay.style.display = "none";
+			yesBtn.removeEventListener("click", onYes);
+			noBtn.removeEventListener("click", onNo);
+			form.removeEventListener("submit", handleSubmit);
+		}
+
+		function onYes() {
+			cleanUp();
+			resolve(true);
+			updatePasswordButton(true);
+		}
+
+		function onNo() {
+			cleanUp();
+			updatePasswordButton(false);
+			resolve(false);
+		}
+
+		form.addEventListener("submit", handleSubmit);
+
+		// yesBtn.addEventListener("click", onYes);
+		noBtn.addEventListener("click", onNo);
+	});
+}
+
+function checkPassword(e, onYes) {
+	e.preventDefault();
+	chrome.storage.sync.get(["password"], ({ password }) => {
+		const pwd = e.target.elements["password"].value;
+		if (pwd === password) {
+			onYes();
+		} else {
+			const msgEl = document.getElementById("customConfirmMessage");
+			msgEl.innerHTML += `
+				<p style="color: red; margin: -8px 0 2px 0; font-size: 13px;">Wrong Password</p>
+			`;
+		}
+	});
+}
+
+function loginPassword() {
+	return new Promise((resolve) => {
+		const overlay = document.getElementById("customConfirm");
+		const form = document.getElementById("custom-confirm-form");
+		const msgEl = document.getElementById("customConfirmMessage");
+		const yesBtn = document.getElementById("confirmYes");
+		const noBtn = document.getElementById("confirmNo");
+		yesBtn.textContent = "Submit";
+		yesBtn.setAttribute("type", "submit");
+		noBtn.textContent = "Cancel";
+		noBtn.setAttribute("type", "reset");
+
+		msgEl.innerHTML = `
+			<label for="password">Login with Password</label>
+			<input type="password" id="password" name="password" placeholder="Enter password" />
+	`;
+		overlay.style.display = "flex";
+
+		const handleSubmit = (e) => {
+			checkPassword(e, onYes);
+		};
+
+		function cleanUp() {
+			overlay.style.display = "none";
+			yesBtn.removeEventListener("click", onYes);
+			noBtn.removeEventListener("click", onNo);
+			form.removeEventListener("submit", handleSubmit);
+		}
+
+		function onYes() {
+			cleanUp();
+			updatePasswordButton(true);
+			resolve(true);
+		}
+
+		function onNo() {
+			cleanUp();
+			updatePasswordButton(true);
+			resolve(false);
+		}
+		noBtn.addEventListener("click", onNo);
+		form.addEventListener("submit", handleSubmit);
+	});
+}
+
 // // Export settings
 // document.getElementById("exportSettings").addEventListener("click", () => {
-// 	chrome.storage.local.get(null, (data) => {
+// 	chrome.storage.sync.get(null, (data) => {
 // 		const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
 // 		const url = URL.createObjectURL(blob);
 // 		const a = document.createElement("a");
@@ -246,7 +389,7 @@ document.querySelectorAll("details").forEach((detailsEl) => {
 // 	reader.onload = () => {
 // 		try {
 // 			const data = JSON.parse(reader.result);
-// 			chrome.storage.local.set(data, () => location.reload());
+// 			chrome.storage.sync.set(data, () => location.reload());
 // 		} catch (err) {
 // 			alert("Invalid JSON file.");
 // 		}
