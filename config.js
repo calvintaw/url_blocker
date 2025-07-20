@@ -1,1 +1,0 @@
-const SAFE_BROWSING_API_KEY = "AIzaSyCatUhhYwBrx-iEAm7UOdy0NLDVZCuiK6E";

@@ -12,16 +12,14 @@
 			"128": "icons/icon128.png"
 		}
 	},
-	"background": {
-		"service_worker": "background.js"
-	},
 	"content_scripts": [
 		{
 			"matches": ["<all_urls>"],
-			"js": ["content.js"]
+			"js": ["content.js"],
+			"all_frames": false,
+			"run_at": "document_idle"
 		}
 	],
-
 	"web_accessible_resources": [
 		{
 			"resources": ["config.js", "warning.html", "styles.css"],

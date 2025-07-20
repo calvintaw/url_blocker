@@ -894,23 +894,27 @@ function enableAutocomplete(inputId, type) {
 			e.preventDefault();
 			if (selectedIndex > 0) selectedIndex--;
 			updateHighlight(items, -1);
-		} else if (e.key === "Tab" && selectedIndex >= 0) {
+		} else if ((e.key === "Tab") | (e.key === "Enter") && selectedIndex >= 0) {
 			e.preventDefault();
 			input.value = suggestions[selectedIndex];
 			suggestionBox.innerHTML = "";
-		} else if (e.key === "Enter") {
-			if (type === "redirect" && inputId === "fromDomain") {
+
+			if (inputId === "fromDomain") {
+				if (selectedIndex) e.target.value = suggestionBox[selectedIndex];
 				document.getElementById("toDomain").focus();
 			}
-			e.target.value = suggestions[selectedIndex];
-			suggestionBox.innerHTML = "";
+		}
+
+		if (e.key === "Enter") {
+			if (inputId === "toDomain" && e.target.value === "") {
+				addRedirectRule();
+			}
 		}
 	});
 
-	function updateHighlight(items, direction) {
+	function updateHighlight(items) {
 		items.forEach((el, i) => {
 			el.classList.toggle("selected", i == selectedIndex);
-			// if (i === selectedIndex) input.value = suggestions[i];
 		});
 		const selectedEl = items[selectedIndex];
 		if (selectedEl) {
@@ -929,49 +933,6 @@ function enableAutocomplete(inputId, type) {
 	window.addEventListener("resize", updatePosition);
 	input.addEventListener("focus", updatePosition);
 }
-
-// function enableAutocomplete(inputId) {
-// 	const input = document.getElementById(inputId);
-// 	const suggestionBox = document.createElement("ul");
-// 	suggestionBox.className = "autocomplete-suggestions";
-// 	document.body.appendChild(suggestionBox);
-// 	const dataList = sites;
-
-// 	function updatePosition() {
-// 		const rect = input.getBoundingClientRect();
-// 		suggestionBox.style.top = `${rect.bottom + window.scrollY}px`;
-// 		suggestionBox.style.left = `${rect.left + window.scrollX}px`;
-// 		suggestionBox.style.width = `${rect.width}px`;
-// 	}
-
-// 	input.addEventListener("input", () => {
-// 		const value = input.value.toLowerCase();
-// 		suggestionBox.innerHTML = "";
-
-// 		if (!value) return;
-
-// 		updatePosition();
-// 		const filtered = dataList.filter((item) => item.toLowerCase().includes(value));
-// 		filtered.forEach((item) => {
-// 			const li = document.createElement("li");
-// 			li.textContent = item;
-// 			li.addEventListener("click", () => {
-// 				input.value = item;
-// 				suggestionBox.innerHTML = "";
-// 			});
-// 			suggestionBox.appendChild(li);
-// 		});
-// 	});
-
-// 	document.addEventListener("click", (e) => {
-// 		if (!suggestionBox.contains(e.target) && e.target !== input) {
-// 			suggestionBox.innerHTML = "";
-// 		}
-// 	});
-
-// 	window.addEventListener("resize", updatePosition);
-// 	input.addEventListener("focus", updatePosition);
-// }
 
 enableAutocomplete("domainInput", "whitelist");
 enableAutocomplete("fromDomain", "redirect");

@@ -1,3 +1,14 @@
+if (window !== window.top) {
+	// Don't run inside iframes
+	return;
+}
+
+if (window.__domainMatcherAlreadyRan) {
+	// Prevent duplicate execution
+	return;
+}
+window.__domainMatcherAlreadyRan = true;
+
 function getHostname(url) {
 	try {
 		return new URL(url).hostname;
@@ -7,17 +18,16 @@ function getHostname(url) {
 }
 
 function isDomainMatch(pattern, hostname) {
-	try {
-		// this is chatgpt generated. i didn't bother to write the regex.
-		const escaped = pattern.replace(/[-[.\]/{}()+^$|\\]/g, "\\$&");
-		const regexStr = escaped.replace(/\*/g, ".*").replace(/\?/g, ".");
-		const regex = new RegExp(`^${regexStr}$`, "i");
-		console.log("Matching hostname:", hostname, "with pattern:", pattern, "=>", isDomainMatch(pattern, hostname));
-		return regex.test(hostname);
-	} catch (e) {
-		console.error("Invalid regex pattern:", pattern, e);
-		return false;
+	pattern = pattern.trim().toLowerCase();
+	hostname = hostname.trim().toLowerCase();
+
+	if (pattern === hostname) return true;
+	if (hostname.endsWith("." + pattern)) return true;
+	if (pattern.startsWith("*.")) {
+		const base = pattern.slice(2);
+		return hostname === base || hostname.endsWith("." + base);
 	}
+	return false;
 }
 
 chrome.storage.local.get(["enabled", "whitelist", "redirectRules"], (data) => {
@@ -45,9 +55,8 @@ chrome.storage.local.get(["enabled", "whitelist", "redirectRules"], (data) => {
 			const redirectTo = rule.to.startsWith("https") ? rule.to : "https://" + rule.to;
 
 			// Prevent infinite redirect
-			if (getHostname(redirectTo) === hostname) return;
+			if (isDomainMatch(getHostname(redirectTo), hostname)) return;
 
-			console.log(`[Redirect] ${hostname} => ${redirectTo}`);
 			window.location.href = redirectTo;
 			break;
 		}
