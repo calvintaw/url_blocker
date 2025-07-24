@@ -25,14 +25,3 @@ A minimal, privacy-friendly Chrome Extension to block malicious or distracting w
 
 ---
 
-## 🔑 Optional: Enable Safe Browsing API
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/).
-2. Create a new project (or use an existing one).
-3. Enable the **Safe Browsing API** under **APIs & Services** > **Library**.
-4. Go to **APIs & Services** > **Credentials** → **Create API key**.
-5. Add the key to `background.js`:
-
-```js
-const API_KEY = "YOUR_GOOGLE_API_KEY";
-```
